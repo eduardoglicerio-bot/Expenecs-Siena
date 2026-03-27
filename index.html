@@ -1,1 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feirinha Escolar</title>
+
+<style>
+body{
+  font-family: Arial;
+  background: linear-gradient(#fff7ed,#fde68a);
+  text-align:center;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+}
+
+.avatar{
+  width:200px;
+  margin:20px auto;
+  position:relative;
+}
+
+.head{
+  width:150px;
+  height:120px;
+  background:#fde68a;
+  border-radius:20px;
+  margin:auto;
+  position:relative;
+}
+
+.eye{
+  width:20px;
+  height:20px;
+  background:black;
+  border-radius:50%;
+  position:absolute;
+  top:40px;
+}
+
+.eye.left{ left:30px }
+.eye.right{ right:30px }
+
+.mouth{
+  width:40px;
+  height:10px;
+  background:black;
+  border-radius:20px;
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.talking .mouth{
+  animation:talk 0.2s infinite alternate;
+}
+
+@keyframes talk{
+  from{height:8px}
+  to{height:25px}
+}
+
+.light{
+  width:15px;
+  height:15px;
+  background:lime;
+  border-radius:50%;
+  margin:10px auto;
+}
+
+button{
+  padding:12px 20px;
+  margin:10px;
+  border:none;
+  border-radius:10px;
+  background:#f59e0b;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.names{
+  margin-top:20px;
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Feirinha da Turma</h1>
+
+<div id="avatar" class="avatar">
+  <div class="light" id="light"></div>
+  <div class="head">
+    <div class="eye left"></div>
+    <div class="eye right"></div>
+    <div class="mouth"></div>
+  </div>
+</div>
+
+<button onclick="chamada()">📢 Chamada da turma</button>
+<button onclick="boasVindas()">🎈 Boas-vindas</button>
+
+<div class="names">
+Professora: <b>Aline Moraes</b>
+</div>
+
+</div>
+
+<script>
+
+const alunos = [
+"Alice Rodrigues dos Santos",
+"Alice Zata Medeiros",
+"Beatriz Neves Lempê",
+"Davi Lucca",
+"Daniel Dias Lombardi",
+"Gael Augusto Soares Costa Gomes",
+"Henrique Rodrigues Doná",
+"Henrique Siqueira Paschoa de Oliveira",
+"Isaac Menezes Possati",
+"João Passos Pianissola",
+"Laura Imberti de Moura",
+"Lorenzo Borghardt Quintaes Cardoso",
+"Lucas Dias Valim",
+"Maitê Fontana Freitas",
+"Maitê Glassner Klein Gomes",
+"Maitê Vieira Mendes",
+"Mariana Vieira Mendes",
+"Murilo Monteiro Simões Machado",
+"Vitória de Matos Dutra",
+"Yan Queiroz Jantorni"
+];
+
+const professora = "Aline Moraes";
+
+const avatar = document.getElementById("avatar");
+const light = document.getElementById("light");
+
+function piscar(){
+  return setInterval(()=>{
+    light.style.opacity = Math.random();
+  },100);
+}
+
+function falar(texto){
+  let u = new SpeechSynthesisUtterance(texto);
+  u.lang = "pt-BR";
+
+  let luz = piscar();
+
+  u.onstart = ()=> avatar.classList.add("talking");
+  u.onend = ()=>{
+    avatar.classList.remove("talking");
+    clearInterval(luz);
+    light.style.opacity = 1;
+  };
+
+  speechSynthesis.speak(u);
+}
+
+function boasVindas(){
+  falar("Olá crianças! Sejam bem vindas à nossa feirinha! A professora " + professora + " preparou tudo com muito carinho!");
+}
+
+// CHAMADA ESTILO PROFESSORA
+async function chamada(){
+  falar("Agora vamos fazer a chamada da turma!");
+
+  for(let nome of alunos){
+    await new Promise(resolve=>{
+      let u = new SpeechSynthesisUtterance(nome + "...");
+      u.lang = "pt-BR";
+
+      u.onstart = ()=> avatar.classList.add("talking");
+      u.onend = ()=>{
+        avatar.classList.remove("talking");
+        setTimeout(resolve,400);
+      };
+
+      speechSynthesis.speak(u);
+    });
+  }
+
+  falar("Muito bem turma! Todos presentes! Vamos começar nossa feirinha!");
+}
+
+</script>
+
+</body>
+</html>
 
