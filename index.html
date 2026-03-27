@@ -1,683 +1,197 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feirinha da Turma</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feirinha Escolar</title>
 
-    :root {
-      --bg1: #fff7ed;
-      --bg2: #fef3c7;
-      --bg3: #fde68a;
-      --card: rgba(255,255,255,0.72);
-      --line: rgba(146, 64, 14, 0.14);
-      --text: #7c2d12;
-      --muted: #9a3412;
-      --green: #34d399;
-      --pink: #f472b6;
-      --blue: #60a5fa;
-      --yellow: #fbbf24;
-      --orange: #fb923c;
-    }
+<style>
+body{
+  font-family: Arial;
+  background: linear-gradient(#fff7ed,#fde68a);
+  text-align:center;
+}
 
-    body {
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, var(--bg1), var(--bg2), var(--bg3));
-      color: var(--text);
-      padding: 20px;
-    }
+.container{
+  max-width:900px;
+  margin:auto;
+}
 
-    .page {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      gap: 20px;
-    }
+.avatar{
+  width:200px;
+  margin:20px auto;
+  position:relative;
+}
 
-    .hero {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 20px;
-      align-items: stretch;
-    }
+.head{
+  width:150px;
+  height:120px;
+  background:#fde68a;
+  border-radius:20px;
+  margin:auto;
+  position:relative;
+}
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      box-shadow: 0 18px 40px rgba(124, 45, 18, 0.12);
-      backdrop-filter: blur(8px);
-    }
+.eye{
+  width:20px;
+  height:20px;
+  background:black;
+  border-radius:50%;
+  position:absolute;
+  top:40px;
+}
 
-    .intro {
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 16px;
-    }
+.eye.left{ left:30px }
+.eye.right{ right:30px }
 
-    .badge {
-      width: fit-content;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: rgba(244, 114, 182, 0.12);
-      border: 1px solid rgba(244, 114, 182, 0.25);
-      color: #9d174d;
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
+.mouth{
+  width:40px;
+  height:10px;
+  background:black;
+  border-radius:20px;
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+}
 
-    h1 {
-      font-size: 2.3rem;
-      line-height: 1.1;
-    }
+.talking .mouth{
+  animation:talk 0.2s infinite alternate;
+}
 
-    .intro p {
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 1.02rem;
-    }
+@keyframes talk{
+  from{height:8px}
+  to{height:25px}
+}
 
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 6px;
-    }
+.light{
+  width:15px;
+  height:15px;
+  background:lime;
+  border-radius:50%;
+  margin:10px auto;
+}
 
-    .chip {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.7);
-      border: 1px solid rgba(146, 64, 14, 0.12);
-      font-weight: 700;
-      color: #92400e;
-    }
+button{
+  padding:12px 20px;
+  margin:10px;
+  border:none;
+  border-radius:10px;
+  background:#f59e0b;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    .assistant {
-      padding: 24px;
-      display: grid;
-      gap: 16px;
-    }
-
-    .assistant h2 {
-      font-size: 1.5rem;
-    }
-
-    .assistant p {
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .assistant-body {
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 14px;
-      align-items: center;
-    }
-
-    .avatar-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 320px;
-    }
-
-    .avatar {
-      position: relative;
-      width: 230px;
-      height: 320px;
-      animation: floaty 3.6s ease-in-out infinite;
-    }
-
-    @keyframes floaty {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-
-    .antenna {
-      position: absolute;
-      top: 4px;
-      left: 50%;
-      width: 8px;
-      height: 42px;
-      transform: translateX(-50%);
-      background: #f59e0b;
-      border-radius: 10px;
-    }
-
-    .light {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%) scale(1);
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 12px var(--green), 0 0 24px var(--green), 0 0 36px rgba(52,211,153,0.7);
-      opacity: 0.65;
-      will-change: opacity, transform, box-shadow;
-    }
-
-    .head {
-      position: absolute;
-      top: 38px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 190px;
-      height: 150px;
-      background: linear-gradient(180deg, #fde68a, #fdba74);
-      border: 6px solid #9a3412;
-      border-radius: 34px;
-      box-shadow: 0 12px 28px rgba(124,45,18,0.18);
-    }
-
-    .hair {
-      position: absolute;
-      top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 150px;
-      height: 42px;
-      background: #7c2d12;
-      border-radius: 20px 20px 12px 12px;
-    }
-
-    .eye {
-      position: absolute;
-      top: 64px;
-      width: 28px;
-      height: 28px;
-      background: #1f2937;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-
-    .eye.left { left: 42px; }
-    .eye.right { right: 42px; }
-
-    .eye::after {
-      content: "";
-      position: absolute;
-      top: 6px;
-      left: 8px;
-      width: 9px;
-      height: 9px;
-      background: white;
-      border-radius: 50%;
-    }
-
-    .eyelid {
-      position: absolute;
-      inset: 0;
-      background: #fdba74;
-      transform: translateY(-110%);
-    }
-
-    .avatar.blink .eyelid {
-      animation: blinkOnce 0.24s ease-in-out;
-    }
-
-    @keyframes blinkOnce {
-      0% { transform: translateY(-110%); }
-      50% { transform: translateY(0%); }
-      100% { transform: translateY(-110%); }
-    }
-
-    .smile {
-      position: absolute;
-      top: 102px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 54px;
-      height: 14px;
-      border-bottom: 4px solid #9a3412;
-      border-radius: 0 0 30px 30px;
-      opacity: 0.45;
-    }
-
-    .mouth {
-      position: absolute;
-      left: 50%;
-      bottom: 20px;
-      transform: translateX(-50%);
-      width: 62px;
-      height: 12px;
-      background: #7f1d1d;
-      border-radius: 20px;
-    }
-
-    .avatar.talking .mouth {
-      animation: talk 0.18s infinite alternate;
-    }
-
-    @keyframes talk {
-      0% { height: 10px; width: 62px; bottom: 20px; }
-      100% { height: 30px; width: 50px; bottom: 12px; }
-    }
-
-    .neck {
-      position: absolute;
-      top: 188px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 34px;
-      height: 22px;
-      background: #fdba74;
-      border: 4px solid #9a3412;
-      border-radius: 10px;
-    }
-
-    .body {
-      position: absolute;
-      top: 210px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 170px;
-      height: 90px;
-      background: linear-gradient(180deg, #93c5fd, #60a5fa);
-      border: 6px solid #1d4ed8;
-      border-radius: 26px;
-    }
-
-    .heart {
-      position: absolute;
-      top: 26px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.4rem;
-    }
-
-    .arm {
-      position: absolute;
-      top: 224px;
-      width: 22px;
-      height: 80px;
-      background: #fdba74;
-      border: 4px solid #9a3412;
-      border-radius: 16px;
-    }
-
-    .arm.left { left: 18px; transform: rotate(18deg); }
-    .arm.right { right: 18px; transform: rotate(-18deg); }
-
-    .leg {
-      position: absolute;
-      bottom: 0;
-      width: 24px;
-      height: 70px;
-      background: #fbbf24;
-      border: 4px solid #92400e;
-      border-radius: 16px;
-    }
-
-    .leg.left { left: 72px; }
-    .leg.right { right: 72px; }
-
-    .panel {
-      display: grid;
-      gap: 12px;
-      align-content: center;
-    }
-
-    .status {
-      min-height: 24px;
-      color: #1d4ed8;
-      font-weight: 700;
-    }
-
-    .input-row, .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    input[type="text"] {
-      flex: 1;
-      min-width: 220px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      border: 1px solid rgba(146, 64, 14, 0.14);
-      background: rgba(255,255,255,0.82);
-      font-size: 1rem;
-      color: #7c2d12;
-      outline: none;
-    }
-
-    button {
-      border: none;
-      border-radius: 16px;
-      padding: 14px 16px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.14s ease, opacity 0.14s ease;
-    }
-
-    button:hover { transform: translateY(-1px); opacity: 0.96; }
-    .btn-green { background: #34d399; color: #064e3b; }
-    .btn-blue { background: #60a5fa; color: #0c4a6e; }
-    .btn-pink { background: #f9a8d4; color: #831843; }
-    .btn-orange { background: #fdba74; color: #9a3412; }
-    .btn-red { background: #fca5a5; color: #7f1d1d; }
-
-    .options {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .option-card {
-      padding: 20px;
-    }
-
-    .option-card h3 {
-      font-size: 1.15rem;
-      margin-bottom: 10px;
-    }
-
-    .option-card p {
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-
-    .option-name {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #b45309;
-      background: rgba(251, 191, 36, 0.18);
-      border: 1px dashed rgba(180, 83, 9, 0.35);
-      border-radius: 18px;
-      padding: 16px;
-      text-align: center;
-    }
-
-    .footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.92rem;
-      padding-bottom: 4px;
-    }
-
-    @media (max-width: 980px) {
-      .hero, .assistant-body, .options {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      h1 { font-size: 1.8rem; }
-      body { padding: 14px; }
-      .intro, .assistant, .option-card { padding: 18px; }
-      .avatar-wrap { min-height: 280px; }
-    }
-  </style>
+.names{
+  margin-top:20px;
+  font-size:18px;
+}
+</style>
 </head>
+
 <body>
-  <main class="page">
-    <section class="hero">
-      <article class="card intro">
-        <div class="badge">🎈 Apresentação da feirinha escolar</div>
-        <h1>Bem-vindos à nossa feirinha da turma</h1>
-        <p>
-          Esta página foi feita para apresentar a feirinha de forma alegre, simples e infantil. O avatar pode dar as boas-vindas, explicar a atividade e falar sobre as três opções de nome que a turma vai escolher.
-        </p>
-        <div class="chips">
-          <div class="chip">🌟 linguagem infantil</div>
-          <div class="chip">🗳️ escolha entre 3 nomes</div>
-          <div class="chip">🔊 fala com voz</div>
-          <div class="chip">💡 luz piscando</div>
-        </div>
-      </article>
 
-      <aside class="card assistant">
-        <div>
-          <h2>Nosso amiguinho da feirinha</h2>
-          <p>
-            Ele fala com as crianças, mexe a boca enquanto fala e a luz pisca durante a narração. Os nomes abaixo são provisórios e depois vocês podem trocar com calma.
-          </p>
-        </div>
+<div class="container">
 
-        <div class="assistant-body">
-          <div class="avatar-wrap">
-            <div id="avatar" class="avatar" aria-label="Avatar infantil">
-              <div class="antenna"><div id="light" class="light"></div></div>
-              <div class="head">
-                <div class="hair"></div>
-                <div class="eye left"><div class="eyelid"></div></div>
-                <div class="eye right"><div class="eyelid"></div></div>
-                <div class="smile"></div>
-                <div class="mouth"></div>
-              </div>
-              <div class="neck"></div>
-              <div class="body"><div class="heart">💛</div></div>
-              <div class="arm left"></div>
-              <div class="arm right"></div>
-              <div class="leg left"></div>
-              <div class="leg right"></div>
-            </div>
-          </div>
+<h1>Feirinha da Turma</h1>
 
-          <div class="panel">
-            <div id="status" class="status">Pronto para começar.</div>
+<div id="avatar" class="avatar">
+  <div class="light" id="light"></div>
+  <div class="head">
+    <div class="eye left"></div>
+    <div class="eye right"></div>
+    <div class="mouth"></div>
+  </div>
+</div>
 
-            <div class="input-row">
-              <input id="userInput" type="text" placeholder="Digite uma fala ou uma pergunta..." />
-              <button id="sendBtn" class="btn-green">Falar</button>
-            </div>
+<button onclick="chamada()">📢 Chamada da turma</button>
+<button onclick="boasVindas()">🎈 Boas-vindas</button>
 
-            <div class="btn-row">
-              <button id="welcomeBtn" class="btn-blue">Boas-vindas</button>
-              <button id="explainBtn" class="btn-orange">Explicar feirinha</button>
-            </div>
+<div class="names">
+Professora: <b>Aline Moraes</b>
+</div>
 
-            <div class="btn-row">
-              <button id="optionsBtn" class="btn-pink">Falar opções</button>
-              <button id="stopBtn" class="btn-red">Parar voz</button>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </section>
+</div>
 
-    <section class="options">
-      <article class="card option-card">
-        <h3>Opção 1</h3>
-        <p>Uma opção alegre e carinhosa para a turma votar.</p>
-        <div id="name1" class="option-name">Jardim da Alegria</div>
-      </article>
+<script>
 
-      <article class="card option-card">
-        <h3>Opção 2</h3>
-        <p>Uma opção divertida para deixar a escolha bem animada.</p>
-        <div id="name2" class="option-name">Mundo Encantado</div>
-      </article>
+const alunos = [
+"Alice Rodrigues dos Santos",
+"Alice Zata Medeiros",
+"Beatriz Neves Lempê",
+"Davi Lucca",
+"Daniel Dias Lombardi",
+"Gael Augusto Soares Costa Gomes",
+"Henrique Rodrigues Doná",
+"Henrique Siqueira Paschoa de Oliveira",
+"Isaac Menezes Possati",
+"João Passos Pianissola",
+"Laura Imberti de Moura",
+"Lorenzo Borghardt Quintaes Cardoso",
+"Lucas Dias Valim",
+"Maitê Fontana Freitas",
+"Maitê Glassner Klein Gomes",
+"Maitê Vieira Mendes",
+"Mariana Vieira Mendes",
+"Murilo Monteiro Simões Machado",
+"Vitória de Matos Dutra",
+"Yan Queiroz Jantorni"
+];
 
-      <article class="card option-card">
-        <h3>Opção 3</h3>
-        <p>Uma opção doce e infantil para a votação da sala.</p>
-        <div id="name3" class="option-name">Turminha do Saber</div>
-      </article>
-    </section>
+const professora = "Aline Moraes";
 
-    <p class="footer">
-      Depois vocês podem trocar os nomes provisórios diretamente no HTML, sem mexer no restante da página.
-    </p>
-  </main>
+const avatar = document.getElementById("avatar");
+const light = document.getElementById("light");
 
-  <script>
-    const avatar = document.getElementById('avatar');
-    const light = document.getElementById('light');
-    const statusEl = document.getElementById('status');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const welcomeBtn = document.getElementById('welcomeBtn');
-    const explainBtn = document.getElementById('explainBtn');
-    const optionsBtn = document.getElementById('optionsBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const name1 = document.getElementById('name1');
-    const name2 = document.getElementById('name2');
-    const name3 = document.getElementById('name3');
+function piscar(){
+  return setInterval(()=>{
+    light.style.opacity = Math.random();
+  },100);
+}
 
-    let lightInterval = null;
-    let blinkInterval = null;
+function falar(texto){
+  let u = new SpeechSynthesisUtterance(texto);
+  u.lang = "pt-BR";
 
-    function setStatus(text) {
-      statusEl.textContent = text;
-    }
+  let luz = piscar();
 
-    function startTalking() {
-      avatar.classList.add('talking');
-      startLightPulse();
-    }
+  u.onstart = ()=> avatar.classList.add("talking");
+  u.onend = ()=>{
+    avatar.classList.remove("talking");
+    clearInterval(luz);
+    light.style.opacity = 1;
+  };
 
-    function stopTalking() {
-      avatar.classList.remove('talking');
-      stopLightPulse();
-    }
+  speechSynthesis.speak(u);
+}
 
-    function startLightPulse() {
-      clearInterval(lightInterval);
-      lightInterval = setInterval(() => {
-        const opacity = 0.25 + Math.random() * 0.75;
-        const scale = 0.9 + Math.random() * 0.35;
-        const glowA = 10 + Math.floor(Math.random() * 10);
-        const glowB = 20 + Math.floor(Math.random() * 18);
-        const glowC = 30 + Math.floor(Math.random() * 20);
-        light.style.opacity = String(opacity);
-        light.style.transform = `translateX(-50%) scale(${scale})`;
-        light.style.boxShadow = `0 0 ${glowA}px #34d399, 0 0 ${glowB}px #34d399, 0 0 ${glowC}px rgba(52,211,153,0.75)`;
-      }, 90);
-    }
+function boasVindas(){
+  falar("Olá crianças! Sejam bem vindas à nossa feirinha! A professora " + professora + " preparou tudo com muito carinho!");
+}
 
-    function stopLightPulse() {
-      clearInterval(lightInterval);
-      light.style.opacity = '0.65';
-      light.style.transform = 'translateX(-50%) scale(1)';
-      light.style.boxShadow = '0 0 12px #34d399, 0 0 24px #34d399, 0 0 36px rgba(52,211,153,0.7)';
-    }
+// CHAMADA ESTILO PROFESSORA
+async function chamada(){
+  falar("Agora vamos fazer a chamada da turma!");
 
-    function blinkNow() {
-      avatar.classList.remove('blink');
-      void avatar.offsetWidth;
-      avatar.classList.add('blink');
-    }
+  for(let nome of alunos){
+    await new Promise(resolve=>{
+      let u = new SpeechSynthesisUtterance(nome + "...");
+      u.lang = "pt-BR";
 
-    function startBlinkLoop() {
-      clearInterval(blinkInterval);
-      blinkInterval = setInterval(() => {
-        blinkNow();
-      }, 2400 + Math.random() * 2600);
-    }
-
-    function chooseVoice() {
-      const voices = speechSynthesis.getVoices();
-      if (!voices.length) return null;
-      return (
-        voices.find(v => v.lang.toLowerCase().includes('pt-br')) ||
-        voices.find(v => v.lang.toLowerCase().startsWith('pt')) ||
-        voices[0]
-      );
-    }
-
-    function speak(text) {
-      if (!('speechSynthesis' in window)) {
-        setStatus('Seu navegador não suporta voz.');
-        return;
-      }
-
-      window.speechSynthesis.cancel();
-      stopTalking();
-
-      const utterance = new SpeechSynthesisUtterance(text);
-      const voice = chooseVoice();
-
-      if (voice) {
-        utterance.voice = voice;
-        utterance.lang = voice.lang;
-      } else {
-        utterance.lang = 'pt-BR';
-      }
-
-      utterance.rate = 0.95;
-      utterance.pitch = 1.15;
-      utterance.volume = 1;
-
-      utterance.onstart = () => {
-        startTalking();
-        setStatus('Falando com a turma...');
+      u.onstart = ()=> avatar.classList.add("talking");
+      u.onend = ()=>{
+        avatar.classList.remove("talking");
+        setTimeout(resolve,400);
       };
 
-      utterance.onend = () => {
-        stopTalking();
-        setStatus('Pronto para falar de novo.');
-      };
-
-      utterance.onerror = () => {
-        stopTalking();
-        setStatus('Não consegui reproduzir a voz.');
-      };
-
-      setTimeout(() => speechSynthesis.speak(utterance), 100);
-    }
-
-    function welcomeSpeech() {
-      speak('Olá, crianças. Sejam muito bem vindas à nossa feirinha. Hoje vamos conhecer ideias lindas e escolher juntos um nome bem especial para a nossa sala.');
-    }
-
-    function explainFair() {
-      speak('A nossa feirinha é um momento de alegria, participação e criatividade. Cada aluno faz parte dessa apresentação com carinho, atenção e muita vontade de aprender brincando.');
-    }
-
-    function optionsSpeech() {
-      speak(`Agora vamos conhecer as três opções de nome da nossa turma. Primeira opção: ${name1.textContent}. Segunda opção: ${name2.textContent}. Terceira opção: ${name3.textContent}. Depois, a sala poderá escolher a preferida.`);
-    }
-
-    function customReply(text) {
-      const msg = text.toLowerCase().trim();
-      if (!msg) return 'Podemos começar quando vocês quiserem.';
-      if (msg.includes('oi') || msg.includes('olá') || msg.includes('ola')) return 'Olá, pessoal. Que bom ter vocês aqui na nossa feirinha.';
-      if (msg.includes('feirinha')) return 'A nossa feirinha é um momento bonito para mostrar o que a turma aprendeu com alegria e participação.';
-      if (msg.includes('nome')) return `As opções de nome são ${name1.textContent}, ${name2.textContent} e ${name3.textContent}.`;
-      if (msg.includes('votar') || msg.includes('escolher')) return 'Depois de ouvir as opções, a turma pode votar e escolher o nome preferido.';
-      if (msg.includes('professora')) return 'A professora preparou este momento com muito carinho para a turma.';
-      return text;
-    }
-
-    sendBtn.addEventListener('click', () => {
-      const text = userInput.value.trim();
-      const reply = customReply(text);
-      speak(reply);
-      userInput.value = '';
+      speechSynthesis.speak(u);
     });
+  }
 
-    userInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        sendBtn.click();
-      }
-    });
+  falar("Muito bem turma! Todos presentes! Vamos começar nossa feirinha!");
+}
 
-    welcomeBtn.addEventListener('click', welcomeSpeech);
-    explainBtn.addEventListener('click', explainFair);
-    optionsBtn.addEventListener('click', optionsSpeech);
-    stopBtn.addEventListener('click', () => {
-      window.speechSynthesis.cancel();
-      stopTalking();
-      setStatus('Voz parada.');
-    });
+</script>
 
-    startBlinkLoop();
-    setStatus('Pronto para começar.');
-  </script>
 </body>
 </html>
